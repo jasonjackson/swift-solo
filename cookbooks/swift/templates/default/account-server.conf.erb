@@ -1,0 +1,12 @@
+[account-server]
+devices = <%= @devices %>
+mount_check = false
+bind_port = <%= @port %>
+user = <%= @username %>
+
+[account-replicator]
+vm_test_mode = yes
+
+[account-updater]
+
+[account-auditor]

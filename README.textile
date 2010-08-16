@@ -1,0 +1,18 @@
+h2. swift-solo
+
+swift-solo is a way to get a working Openstack Swift setup working on your own machine, quickly, using Chef.
+
+h2. Setup
+
+* Ubuntu 10.04 (others may work)
+* Chef 0.9.X
+* Git
+
+If starting from a raw ubuntu instance, you can run the commands in <b>boot.txt</b> to bootstrap chef and git onto the machine.
+
+h2. Execution
+
+The <b>run-me</b> script will start chef-solo into motion.  The swift servers, the location of their data stores, and ports, are
+configured (to a degree) with the <b>swift.json</b> file.
+
+In addition, some configuration is achieved from the cookbooks/swift/attributes/swift.rb file.  The use of SSL, and the repository and branch/tag used for actually installing swift are set here.

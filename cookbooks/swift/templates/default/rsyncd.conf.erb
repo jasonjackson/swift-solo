@@ -1,0 +1,13 @@
+uid = swift
+gid = swift
+log file = /var/log/rsyncd.log
+pid file = /var/run/rsyncd.pid
+
+<% @servers.each do |server,path| %>
+[<%= server %>]
+max connections = 25
+path = <%= path %>
+read only = false
+lock file = /var/lock/<%= server %>.lock
+
+<% end %>

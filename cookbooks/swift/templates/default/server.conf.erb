@@ -1,0 +1,12 @@
+[<%= @type %>-server]
+devices = <%= @devices %>
+mount_check = false
+bind_port = <%= @port %>
+user = <%= @username %>
+
+[<%= @type %>-replicator]
+vm_test_mode = yes
+
+[<%= @type %>-updater]
+
+[<%= @type %>-auditor]

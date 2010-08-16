@@ -1,0 +1,15 @@
+#!/bin/bash
+
+cd ~
+
+if [[ ! -d python-cloudfiles ]]; then
+	git clone http://github.com/rackspace/python-cloudfiles.git
+fi
+
+if [[ ! -d /usr/local/lib/python2.6/dist-packages/cloudfiles ]]; then
+	cd python-cloudfiles
+	sudo python setup.py install
+fi
+
+sudo swift-auth-create-account account user password
+python ~/swift-install/tests/test.py

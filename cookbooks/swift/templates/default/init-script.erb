@@ -1,0 +1,62 @@
+#! /bin/bash
+### BEGIN INIT INFO
+# Provides:          swift-<%= @server %>
+# Required-Start:    $remote_fs
+# Required-Stop:     $remote_fs
+# Default-Start:     2 3 4 5
+# Default-Stop:      0 6
+# Short-Description: Save and restore random seed between restarts.
+# Description:       This script saves the random seed between restarts.
+#                    It is called from the boot, halt and reboot scripts.
+### END INIT INFO
+
+PATH=/sbin:/usr/sbin:/bin:/usr/bin:/usr/local/sbin
+DESC=<%= @server %>
+
+if [ ! -d /var/run/swift ]; then
+	mkdir /var/run/swift
+	chown swift:swift /var/run/swift
+fi
+
+case "$1" in
+  start)
+	RESP=$(sudo -u swift /usr/local/bin/swift-init $DESC start)
+	if [[ $RESP =~ "Starting" ]]; then
+		echo "Starting swift $DESC"
+		exit 0
+	elif [[ $RESP =~ "already be running" ]]; then
+		echo "Error starting $DESC - already running."
+		exit 1
+	else
+		echo "Error starting $DESC"
+		exit 2
+	fi
+	;;
+  stop)
+	RESP=$(sudo -u swift /usr/local/bin/swift-init $DESC stop)
+	if [[ $RESP =~ "Stopping" ]]; then
+		echo "Stopping swift $DESC"
+		exit 0
+	elif [[ $RESP =~ "No $DESC running" ]]; then
+		echo "Error stopping $DESC - not running."
+		exit 1
+	else
+		echo "Error stopping $DESC"
+		exit 2
+	fi
+	;;
+  status)
+	/usr/bin/pgrep -f /usr/local/bin/swift-$DESC > /dev/null
+	exit $?
+	;;
+  restart|reload|force-reload)
+	echo "Error: argument '$1' not supported" >&2
+	exit 3
+	;;
+  *)
+	echo "Usage: swift-$DESC start|stop" >&2
+	exit 3
+	;;
+esac
+
+:

@@ -1,0 +1,6 @@
+echo "deb http://apt.opscode.com/ lucid main" | sudo tee -a /etc/apt/sources.list.d/opscode.list
+sudo curl http://apt.opscode.com/packages@opscode.com.gpg.key | sudo apt-key add -
+sudo apt-get update
+echo "chef chef/chef_server_url string http://localhost:4000" >> chef.preseed
+sudo debconf-set-selections chef.preseed
+sudo apt-get install chef git-core -q -y

@@ -1,0 +1,11 @@
+[proxy-server]
+bind_port = 8080
+user = swift
+<% if @use_ssl %>
+cert_file = /etc/swift/cert.pem
+key_file = /etc/swift/key.pem
+
+[auth-server]
+ssl = true
+<% end %>
+
