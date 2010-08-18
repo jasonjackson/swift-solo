@@ -60,29 +60,7 @@ service "rsync" do
   subscribes :restart, resources(:template => "/etc/rsyncd.conf")
 end
 
-if(node[:swift][:repository][:url] =~ /git/)
-  git "/home/swift/swift" do
-    user "swift"
-    group "swift"
-    reference node[:swift][:repository][:tag]
-    repository node[:swift][:repository][:url]
-    action :sync
-  end
-else
-  package "bazaar"
-
-  execute "install-swift-bazaar" do
-    command "bzr co -r tag:#{node[:swift][:repository][:tag]} lp:swift"
-    cwd "/home/swift"
-    not_if "test -d /home/swift/swift"
-  end
-end
-
-execute "python setup.py develop" do
-  cwd "/home/swift/swift"
-  creates "/usr/local/bin/st"
-end
-
+include_recipe "swift::install"
 include_recipe "swift::demo_device"
 
 ["object-server","account-server","container-server"].each do |server|
