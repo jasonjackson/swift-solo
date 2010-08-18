@@ -1,5 +1,5 @@
-default[:swift][:proxy_server][:use_ssl] = true
-default[:swift][:auth_server][:use_ssl] = true
+default[:swift][:proxy_server][:use_ssl] = false
+default[:swift][:auth_server][:use_ssl] = false
 
 if(node[:ec2])
   default[:swift][:proxy_server][:hostname] = node[:ec2][:public_hostname]

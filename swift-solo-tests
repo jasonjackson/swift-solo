@@ -1,0 +1,11 @@
+#!/bin/bash
+
+SCRIPT_DIR=`dirname $0`
+TESTS=$SCRIPT_DIR/tests/*
+
+for t in $TESTS
+do
+  echo "Executing $t"
+  $t
+done
+
