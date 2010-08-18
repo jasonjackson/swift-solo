@@ -4,6 +4,7 @@
 #
 # Copyright 2010, Cloudscaling
 #
+
 execute "install_cloudfiles" do
   command "python setup.py install"
   cwd "/tmp/python-cloudfiles"

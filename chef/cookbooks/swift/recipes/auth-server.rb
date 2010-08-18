@@ -1,3 +1,10 @@
+#
+# Cookbook Name:: swift            
+# Recipe:: auth-server
+#
+# Copyright 2010, Cloudscaling
+#
+
 include_recipe "swift::account-server"
 include_recipe "swift::ssl-certificates"
 

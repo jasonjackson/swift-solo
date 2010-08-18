@@ -1,3 +1,10 @@
+#
+# Cookbook Name:: swift            
+# Definitions:: add_ring_node
+#
+# Copyright 2010, Cloudscaling
+#
+
 define :add_ring_node, :server => nil, :weight => nil do
   server = params[:server]
   weight = params[:weight]

@@ -1,3 +1,10 @@
+#
+# Cookbook Name:: swift            
+# Recipe:: object-server
+#
+# Copyright 2010, Cloudscaling
+#
+
 [:setup, :build, :start].each do |a|
 
   node[:swift_servers]["object-server"].each do |p,d|

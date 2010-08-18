@@ -1,3 +1,10 @@
+#
+# Cookbook Name:: swift            
+# Recipe:: default
+#
+# Copyright 2010, Cloudscaling
+#
+
 include_recipe "apt"
 
 package "ntp"

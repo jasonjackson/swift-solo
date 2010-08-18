@@ -1,3 +1,10 @@
+#
+# Cookbook Name:: swift            
+# Recipe:: demo_device
+#
+# Copyright 2010, Cloudscaling
+#
+
 execute "build-demo-swift-device" do
   command "dd if=/dev/zero of=/tmp/swift bs=1024 count=2048000" 
   not_if { File.exists?("/tmp/swift") }

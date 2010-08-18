@@ -1,3 +1,10 @@
+#
+# Cookbook Name:: swift            
+# Attributes:: swift
+#
+# Copyright 2010, Cloudscaling
+#
+
 default[:swift][:proxy_server][:use_ssl] = false
 default[:swift][:auth_server][:use_ssl] = false
 

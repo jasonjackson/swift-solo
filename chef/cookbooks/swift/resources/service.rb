@@ -1,3 +1,10 @@
+#
+# Cookbook Name:: swift            
+# Resources:: service
+#
+# Copyright 2010, Cloudscaling
+#
+
 actions :setup, :start, :stop, :restart, :build, :rebalance
 
 attribute :port, :kind_of => Integer, :required => true

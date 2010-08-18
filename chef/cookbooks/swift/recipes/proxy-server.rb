@@ -1,3 +1,10 @@
+#
+# Cookbook Name:: swift            
+# Recipe:: proxy-server
+#
+# Copyright 2010, Cloudscaling
+#
+
 include_recipe "swift::account-server"
 
 template "/etc/swift/proxy-server.conf" do

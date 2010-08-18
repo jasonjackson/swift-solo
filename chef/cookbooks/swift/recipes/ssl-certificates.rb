@@ -1,3 +1,10 @@
+#
+# Cookbook Name:: swift            
+# Recipe:: ssl-certificates
+#
+# Copyright 2010, Cloudscaling
+#
+
 cookbook_file "/etc/swift/cert.pem" do
   source "cert.pem"
   owner "swift"

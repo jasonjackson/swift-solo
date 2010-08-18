@@ -1,3 +1,10 @@
+#
+# Cookbook Name:: swift            
+# Providers:: service
+#
+# Copyright 2010, Cloudscaling
+#
+
 action :setup do
   short_name = new_resource.name.sub(/-server/,'')
 
