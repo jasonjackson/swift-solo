@@ -26,7 +26,7 @@ if(node[:swift][:repository][:url] =~ /git/)
 
 else
 
-  package "bazaar"
+  package "bzr"
 
   execute "install-swift-bazaar" do
     command "bzr co -r tag:#{node[:swift][:repository][:tag]} #{node[:swift][:repository][:url]}"
