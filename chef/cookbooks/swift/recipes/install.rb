@@ -29,7 +29,7 @@ else
   package "bzr"
 
   execute "install-swift-bazaar" do
-    command "bzr co -r tag:#{node[:swift][:repository][:tag]} #{node[:swift][:repository][:url]}"
+    command "bzr co -r #{node[:swift][:repository][:tag]} #{node[:swift][:repository][:url]} swift"
     cwd "/home/swift"
     not_if "test -d /home/swift/swift"
     notifies :run, resources(:execute => "install_swift"), :immediately
