@@ -1,9 +1,13 @@
-[auth-server]
-user = swift
+[DEFAULT]
+user = swift 
 <% if @use_ssl %>
-default_cluster_url = https://<%= @hostname %>:8080/v1
 cert_file = /etc/swift/cert.pem
 key_file = /etc/swift/key.pem
-<% else %>
-default_cluster_url = http://<%= @hostname %>:8080/v1
 <% end %>
+
+[pipeline:main]
+pipeline = auth-server
+
+[app:auth-server]
+use = egg:swift#auth 
+default_cluster_url = <%= @use_ssl && "https" || "http" %>://<%= @hostname %>:8080/v1

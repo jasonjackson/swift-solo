@@ -15,7 +15,7 @@
     end
 
     t = resources(:template => "/etc/rsyncd.conf")
-    t.variables[:servers]["object-server" + p.to_s] = d
+    t.variables[:servers]["object" + p.to_s] = d
 
   end
 

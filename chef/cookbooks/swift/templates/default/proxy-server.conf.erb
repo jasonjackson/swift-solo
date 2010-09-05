@@ -1,11 +1,24 @@
-[proxy-server]
+[DEFAULT]
 bind_port = 8080
-user = swift
+user = swift 
 <% if @use_ssl %>
 cert_file = /etc/swift/cert.pem
 key_file = /etc/swift/key.pem
-
-[auth-server]
-ssl = true
 <% end %>
+
+[pipeline:main]
+pipeline = healthcheck cache auth proxy-server
+
+[app:proxy-server]
+use = egg:swift#proxy
+
+[filter:auth]
+use = egg:swift#auth
+ssl = <% @use_ssl %>
+
+[filter:healthcheck]
+use = egg:swift#healthcheck
+
+[filter:cache]
+use = egg:swift#memcache
 
