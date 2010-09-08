@@ -6,48 +6,50 @@
 #
 
 action :setup do
+  name = new_resource.name
   short_name = new_resource.name.sub(/-server/,'')
+  devices = new_resource.devices
+  port = new_resource.port
 
-  directory "/etc/swift/#{new_resource.name}" do
+  directory "/etc/swift/#{name}" do
     owner "swift"
     group "swift"
     recursive true
     mode 0755
   end  
 
-  template "/etc/swift/#{new_resource.name}/#{new_resource.name}-#{new_resource.port}.conf" do
+  template "/etc/swift/#{name}/#{port}.conf" do
     cookbook "swift"
-    source "server.conf.erb"
+    source "#{name}.conf.erb"
     mode 0644
     variables(
       :type => short_name,
-      :devices => new_resource.devices,
-      :port => new_resource.port,
-      :username => "swift"
+      :devices => devices,
+      :port => port,
+      :user => "swift"
     )
-    notifies :restart, resources(:swift_service => new_resource.name)
+    notifies :restart, resources(:swift_service => name)
     backup false
   end
 
-  directory "/var/run/swift/#{new_resource.name}" do
+  directory "/var/run/swift/#{name}" do
     owner "swift"
     group "swift"
   end
 
-  if(new_resource.devices)
-    directory new_resource.devices do
+  if(devices)
+    directory devices do
       owner "swift"
       group "swift"
     end
   end
 
-  template "/etc/init.d/swift-#{new_resource.name}" do
+  template "/etc/init.d/swift-#{name}" do
     source "init-script.erb"
     mode 0755
-    variables :server => new_resource.name
+    variables :server => name
     backup false
   end
-
 end
 
 action :rebalance do

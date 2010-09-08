@@ -15,9 +15,9 @@ else
 end
 
 # For git checkouts
-default[:swift][:repository][:url] = "http://github.com/openstack/swift.git"
-default[:swift][:repository][:tag] = "1.0.2"
+#default[:swift][:repository][:url] = "http://github.com/openstack/swift.git"
+#default[:swift][:repository][:tag] = "1.0.2"
 
 # For bzr checkouts
 default[:swift][:repository][:url] = "lp:swift" # For bzr checkouts
-default[:swift][:repository][:tag] = "revno:58" # For bzr checkous
+#default[:swift][:repository][:tag] = "revno:58" # For bzr checkous

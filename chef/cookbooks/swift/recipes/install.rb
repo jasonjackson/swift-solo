@@ -27,9 +27,11 @@ if(node[:swift][:repository][:url] =~ /git/)
 else
 
   package "bzr"
+  
+  tag = node[:swift][:repository][:tag] ? "-r #{node[:swift][:repository][:tag]}" : ""
 
   execute "install-swift-bazaar" do
-    command "bzr co -r #{node[:swift][:repository][:tag]} #{node[:swift][:repository][:url]} swift"
+    command "bzr co #{tag} #{node[:swift][:repository][:url]} swift"
     cwd "/home/swift"
     not_if "test -d /home/swift/swift"
     notifies :run, resources(:execute => "install_swift"), :immediately
