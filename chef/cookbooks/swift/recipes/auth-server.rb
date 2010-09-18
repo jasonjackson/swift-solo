@@ -14,7 +14,7 @@ template "/etc/swift/auth-server.conf" do
   group "swift"
   variables(
     :use_ssl => node[:swift][:auth_server][:use_ssl],
-    :hostname => node[:swift][:proxy_server][:hostname]
+    :hostname => node[:swift][:proxy_server][:hostname],
     :super_admin_key => node[:swift][:auth_server][:super_admin_key]
   )
 end

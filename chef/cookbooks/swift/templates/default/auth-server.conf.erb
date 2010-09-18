@@ -12,4 +12,4 @@ pipeline = auth-server
 use = egg:swift#auth 
 default_cluster_url = <%= @use_ssl && "https" || "http" %>://<%= @hostname %>:8080/v1
 
-super_admin_key = <% @super_admin_key %>
+super_admin_key = <%= @super_admin_key %>

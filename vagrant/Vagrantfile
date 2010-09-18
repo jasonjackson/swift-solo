@@ -10,7 +10,7 @@ Vagrant::Config.run do |config|
   config.chef.cookbooks_path = "~/git/swift-solo/chef/cookbooks"
   config.chef.run_list.clear
   config.chef.add_recipe("swift::setup_solo")
-  config.chef.add_recipe("swift::functional_tests")
+  config.chef.add_recipe("swift::setup_functional_tests")
 
   config.chef.json.merge!({ 
   "swift_servers" => {                                                                            
