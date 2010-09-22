@@ -5,9 +5,11 @@
 # Copyright 2010, Cloudscaling
 #
 
+default[:swift][:user] = "swift"
+default[:swift][:auth_server][:super_admin_key] = "devauth"
+
 default[:swift][:proxy_server][:use_ssl] = false
 default[:swift][:auth_server][:use_ssl] = false
-default[:swift][:auth_server][:super_admin_key] = "devauth"
 
 if(node[:ec2])
   default[:swift][:proxy_server][:hostname] = node[:ec2][:public_hostname]

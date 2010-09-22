@@ -15,12 +15,12 @@ DESC=<%= @server %>
 
 if [ ! -d /var/run/swift ]; then
 	mkdir /var/run/swift
-	chown swift:swift /var/run/swift
+	chown <%= @user %>:<%= @user %> /var/run/swift
 fi
 
 case "$1" in
   start)
-	RESP=$(sudo -u swift /usr/local/bin/swift-init $DESC start)
+	RESP=$(sudo -u <%= @user %> /usr/local/bin/swift-init $DESC start)
 	if [[ $RESP =~ "Starting" ]]; then
 		echo "Starting swift $DESC"
 		exit 0
@@ -33,7 +33,7 @@ case "$1" in
 	fi
 	;;
   stop)
-	RESP=$(sudo -u swift /usr/local/bin/swift-init $DESC stop)
+	RESP=$(sudo -u <%= @user %> /usr/local/bin/swift-init $DESC stop)
 	if [[ $RESP =~ "Stopping" ]]; then
 		echo "Stopping swift $DESC"
 		exit 0

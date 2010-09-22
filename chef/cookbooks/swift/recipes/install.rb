@@ -7,7 +7,7 @@
 
 execute "install_swift" do
   command "python setup.py develop"
-  cwd "/home/swift/swift"
+  cwd "/home/#{node[:swift][:user]}/swift"
   action :nothing
 end
 
@@ -15,9 +15,9 @@ if(node[:swift][:repository][:url] =~ /git/)
 
   package "git-core"
 
-  git "/home/swift/swift" do
-    user "swift"  
-    group "swift"
+  git "/home/#{node[:swift][:user]}/swift" do
+    user node[:swift][:user]
+    group node[:swift][:user]
     reference node[:swift][:repository][:tag]
     repository node[:swift][:repository][:url]
     action :sync
@@ -32,8 +32,9 @@ else
 
   execute "install-swift-bazaar" do
     command "bzr co #{tag} #{node[:swift][:repository][:url]} swift"
-    cwd "/home/swift"
-    not_if "test -d /home/swift/swift"
+    user node[:swift][:user]
+    cwd "/home/#{node[:swift][:user]}"
+    not_if "test -d /home/#{node[:swift][:user]}/swift"
     notifies :run, resources(:execute => "install_swift"), :immediately
   end
 

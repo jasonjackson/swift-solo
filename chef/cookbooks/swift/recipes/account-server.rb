@@ -21,11 +21,7 @@
 end
 
 ["account-replicator","account-auditor","account-reaper"].each do |s|
-  template "/etc/init.d/swift-#{s}" do
-    source "init-script.erb"
-    mode 0755
-    variables(:server => s)
-  end
+  swift_init_script s
 
   service "swift-#{s}" do
     action [ :start, :enable ]

@@ -30,30 +30,30 @@ include_recipe "apt::python_software_properties"
   package pkg_name
 end
 
-user "swift" do
+user node[:swift][:user] do
   manage_home true
 end
 
-directory "/home/swift" do
-  owner "swift"
-  group "swift"
+directory "/home/#{node[:swift][:user]}" do
+  owner node[:swift][:user]
+  group node[:swift][:user]
 end
 
 directory "/var/run/swift" do
-  owner "swift"
-  group "swift"
+  owner node[:swift][:user]
+  group node[:swift][:user]
   recursive true
   mode 0755
 end
 
 directory "/etc/swift" do
-  owner "swift"
-  group "swift"
+  owner node[:swift][:user]
+  group node[:swift][:user]
 end
 
 directory "/etc/swift/backups" do
-  owner "swift"
-  group "swift"
+  owner node[:swift][:user]
+  owner node[:swift][:user]
 end
 
 include_recipe "swift::configure_rsync"
@@ -92,13 +92,13 @@ execute "mount #{mnt_dir}" do
 end
 
 directory "/srv" do
-  owner "swift"
-  group "swift"
+  owner node[:swift][:user]
+  group node[:swift][:user]
 end
 
 directory "#{mnt_dir}/test" do
-  owner "swift"
-  group "swift"
+  owner node[:swift][:user]
+  group node[:swift][:user]
 end
 
 
@@ -107,8 +107,8 @@ end
   l = "/srv/#{n}" 
 
   directory d do
-    owner "swift"
-    group "swift"
+    owner node[:swift][:user]
+    group node[:swift][:user]
   end
   
   link l do
@@ -116,13 +116,13 @@ end
   end
  
   directory "#{l}/node" do
-    owner "swift"
-    group "swift"
+    owner node[:swift][:user]
+    group node[:swift][:user]
   end
 
   directory "#{l}/node/#{n}" do
-    owner "swift"
-    group "swift"
+    owner node[:swift][:user]
+    group node[:swift][:user]
   end
 end
 

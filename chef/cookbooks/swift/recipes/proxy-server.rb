@@ -9,18 +9,14 @@ include_recipe "swift::account-server"
 
 template "/etc/swift/proxy-server.conf" do
   source "proxy-server.conf.erb"
-  owner "swift"
-  group "swift"
+  owner node[:swift][:user]
+  group node[:swift][:user]
   variables(
     :use_ssl => node[:swift][:auth_server][:use_ssl]
   )
 end
 
-template "/etc/init.d/swift-proxy-server" do
-  source "init-script.erb"
-  mode 0755
-  variables(:server => "proxy-server")
-end
+swift_init_script "proxy-server"
 
 service "swift-proxy-server" do
   action [:start, :enable]

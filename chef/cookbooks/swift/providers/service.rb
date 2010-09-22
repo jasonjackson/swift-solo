@@ -12,8 +12,8 @@ action :setup do
   port = new_resource.port
 
   directory "/etc/swift/#{name}" do
-    owner "swift"
-    group "swift"
+    owner node[:swift][:user]
+    group node[:swift][:user]
     recursive true
     mode 0755
   end  
@@ -21,35 +21,32 @@ action :setup do
   template "/etc/swift/#{name}/#{port}.conf" do
     cookbook "swift"
     source "#{name}.conf.erb"
+    owner node[:swift][:user]
+    group node[:swift][:user]
     mode 0644
     variables(
       :type => short_name,
       :devices => devices,
       :port => port,
-      :user => "swift"
+      :user => node[:swift][:user]
     )
     notifies :restart, resources(:swift_service => name)
     backup false
   end
 
   directory "/var/run/swift/#{name}" do
-    owner "swift"
-    group "swift"
+    owner node[:swift][:user]
+    group node[:swift][:user]
   end
 
   if(devices)
     directory devices do
-      owner "swift"
-      group "swift"
+      owner node[:swift][:user]
+      group node[:swift][:user]
     end
   end
 
-  template "/etc/init.d/swift-#{name}" do
-    source "init-script.erb"
-    mode 0755
-    variables :server => name
-    backup false
-  end
+  swift_init_script name
 end
 
 action :rebalance do
@@ -58,7 +55,7 @@ action :rebalance do
   execute "rebalance-#{short_name}" do
     cwd "/etc/swift"
     command "/usr/local/bin/swift-ring-builder #{short_name}.builder rebalance"
-    user "swift"
+    user node[:swift][:user]
   end
 end
 
@@ -83,7 +80,7 @@ action :build do
   short_name = new_resource.name.sub(/-server/,'')
 
   execute "build-#{new_resource.name}-ring" do
-    user "swift"
+    user node[:swift][:user]
     cwd "/etc/swift"
     command "/usr/local/bin/swift-ring-builder #{short_name}.builder create #{new_resource.part_power} #{new_resource.replicas} #{new_resource.min_part_hours}"
     creates "/etc/swift/#{short_name}.builder"
