@@ -4,7 +4,10 @@ Vagrant::Config.run do |config|
   # online.
 
   # Every Vagrant virtual environment requires a box to build off of.
-  config.vm.box = "base"
+  config.vm.box = "lucid64"
+
+  #port for SAIO to work from the host
+  config.vm.forward_port("http", 11000, 11000)
 
   config.vm.provisioner = :chef_solo
   config.chef.cookbooks_path = "~/git/swift-solo/chef/cookbooks"

@@ -1,6 +1,8 @@
 h2. swift-solo
 
-swift-solo is an automated way to get a working "Openstack Swift":https://launchpad.net/~swift development setup working on a single machine, quickly, using "Chef.":http://wiki.opscode.com/display/chef/Home
+swift-solo is an automated way to get a working "Openstack
+Swift":https://launchpad.net/~swift development setup working on a single
+machine, quickly, using "Chef.":http://wiki.opscode.com/display/chef/Home
 
 h2. Setup
 
@@ -8,32 +10,49 @@ h2. Setup
 * Chef 0.9.X
 * Git
 
-If starting from a raw ubuntu instance, you can run the commands in <b>boot.txt</b> to bootstrap chef and git.
+If starting from a raw ubuntu instance, you can run the commands in
+<b>boot.txt</b> to bootstrap chef and git.
 
 h2. Execution
 
-The *swift-install* script will start chef-solo.  The swift servers, the location of their data stores, and ports, are
-configured (to a degree) with the *swift.json* file in the chef directory.
+The *swift-install* script will start chef-solo.  The swift servers, the
+location of their data stores, and ports, are configured (to a degree) with the
+*swift.json* file in the chef directory.
 
-The repository to sync for the swift code can be configured in the chef/cookbooks/swift/attributes/swift.rb file. There are a few other configurable bits, and this will likely expand. Please open issues or make pull requests for configurations that you want or added.
+The repository to sync for the swift code can be configured in the
+chef/cookbooks/swift/attributes/swift.rb file. There are a few other
+configurable bits, and this will likely expand. Please open issues or make pull
+requests for configurations that you want or added.
 
-*swift-test-setup* runs a simple recipe to install python-cloudfiles and *swift-solo-tests* will run everything it finds in the test directory, which right now has one script that will create an account, add an object and retrieve it.
+*swift-test-setup* runs a simple recipe to install python-cloudfiles and
+*swift-solo-tests* will run everything it finds in the test directory, which
+right now has one script that will create an account, add an object and
+retrieve it.
 
-We encourage you to read how the recipes work and they are basically an automation of the "SAIO - Swift All In One":http://swift.openstack.org/development_saio.html instructions.
+We encourage you to read how the recipes work and they are basically an
+automation of the "SAIO - Swift All In One":http://swift.openstack.org/development_saio.html instructions.
 
 h2. Overview
 
-The running Swift service is provided by 5 connected servers: object, container, account, auth, and proxy.
+The running Swift service is provided by 5 connected servers: object,
+container, account, auth, and proxy.
 
-The object, container and account are where actual data is stored. The implementation of these services are all similar, they all represent different granularity of rings mapping the names of entities in swift and their physical location. Object contains the actual blobs, container indexes the objects and account indexes the containers.
+The object, container and account are where actual data is stored. The
+implementation of these services are all similar, they all represent different
+granularity of rings mapping the names of entities in swift and their physical
+location. Object contains the actual blobs, container indexes the objects and
+account indexes the containers.
 
-The auth server provides authentication and the proxy server provides the API to GET and POST data from the other services.
+The auth server provides authentication and the proxy server provides the API
+to GET and POST data from the other services.
 
 h2. Chef Recipes
 
-chef-solo does the heavy lifting. The chef/swift.json contains all the configuration for setting up the rings and servers and the chef runlist (which for now starts of the swift::default recipe).
+chef-solo does the heavy lifting. The chef/swift.json contains all the
+configuration for setting up the rings and servers and the chef runlist (which
+for now starts of the swift::default recipe).
 
-*swift::default:*
+*swift::setup_solo:*
 setup the base environment
 install swift from a repo
 install rsync, which is needed to keep the rings synchronized between nodes
@@ -44,9 +63,6 @@ builds the rings and rebalances them
 *swift::install:*
 Syncs the repository and installs swift
 
-*swift::demo_device:*
-creates an xfs filesystem on a loopback file device as a test playground for the server data.  In general this won't be needed on real servers, since there will be /dev/sd? drives to work off of, but on the virtual machines for testing purposes we create this and mount it into /mnt/sdb1.  The idea of putting it in its own recipe was so it was easier to turn off/rip out later.
-
 There is a recipe for each of the swift servers
 *swift::object-server*
 *swift::container-server*
@@ -54,8 +70,29 @@ There is a recipe for each of the swift servers
 *swift::auth-server*
 *swift::proxy-server*
 
-These take the data from swift.json and create the swift server config files, and startup the server. It loops over the multiple entries since we have multiple servers of each type on the same machine. These recipes add their info to the rsyncd.conf template variable with the server information and create an /etc/init.d file for startup and reboots.
+The swift::demo_device recipe was replaced by definitions to create a loopback
+device and build xfs. In general this won't be needed on real servers, since
+there will be /dev/sd? drives to work off of, but on the virtual machines for
+testing purposes we create this and mount it into /mnt/sdb1.
 
+These take the data from swift.json and create the swift server config files,
+and startup the server. It loops over the multiple entries since we have
+multiple servers of each type on the same machine. These recipes add their info
+to the rsyncd.conf template variable with the server information and create an
+/etc/init.d file for startup and reboots.
+
+h2. Using Vagrant
+
+"Vagrant":http://vagrantup.com/ is a nice tool for managing virtual machines
+and provisioning them with chef cookbooks. There are instructions on the
+Vagrant site for getting setup but it should be simple:
+* Install "VirtualBox":http://www.virtualbox.org/
+* run 'gem install vagrant'
+* run 'vagrant box add lucid64 http://files.vagrantup.com/lucid64.box'
+* if you have cloned swift-solo in ~/git, then cd to ~/git/swift-solo/vagrant
+* run 'vagrant up'
+* magic happens
+ 
 h2. License
 
 Apache 2
